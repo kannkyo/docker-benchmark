@@ -16,12 +16,12 @@ do
   esac
 done
 
-if ["$OS" = ""]; then
+if [ "$OS" = "" ]; then
     echo "INVALID OPTION ERROR（OS=$OS)"
     exit 1
 fi
 
-if ["$VERSION" = ""]; then
+if [ "$VERSION" = "" ]; then
     echo "INVALID OPTION ERROR（VERSION=$VERSION)"
     exit 1
 fi
