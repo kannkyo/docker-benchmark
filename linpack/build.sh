@@ -29,9 +29,4 @@ if [ "$VERSION" = "" ]; then
 fi
 
 tag_name=$OS-$VERSION
-context=$OS/$VERSION/
-
-mkdir -p $context/.tmp/
-cp -rp scripts/docker-entrypoint.sh $context/.tmp/docker-entrypoint.sh
-docker build -t dokbench-linpack:$tag_name $context
-rm -rf $context/.tmp/
+docker build -t dokbench-linpack:$tag_name --build-arg base_image=$OS:$VERSION .
