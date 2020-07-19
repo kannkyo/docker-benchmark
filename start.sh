@@ -1,7 +1,7 @@
 #!/bin/bash
 
 usage() {
-    echo "Usage: $0 -o os -v os-version [-m mode]" 1>&2
+    echo "Usage: $0 -o os -v os-version" 1>&2
     exit 1
 }
 
@@ -10,7 +10,6 @@ do
   case $OPT in
      o) OS="$OPTARG";;
      v) VERSION="$OPTARG";;
-     m) MODE="$OPTARG";;
      h) usage;;
      *) echo "INVALID OPTION ERROR（OPTION=$OPT)";;
   esac
@@ -31,10 +30,7 @@ options=
 TAG=$OS-$VERSION
 ./build.sh -o $OS -v $VERSION
 
-if [ "$MODE" = "mount_host" ]; then
-  docker run -it --rm -v $(pwd)/.tmp:/mnt/host dokbench:$TAG /bin/bash
-elif [ "$MODE" = "net_host" ]; then
-  docker run -it --rm -v $(pwd)/.tmp:/mnt/host dokbench:$TAG /bin/bash
-fi
-
-docker run -it --rm $options dokbench:$TAG /bin/bash
+docker run -it --rm \
+  -v $(pwd)/.tmp:/mnt/host \
+  --mount type=tmpfs,tmpfs-size=2147483648,destination=/mnt/tmpfs \
+  dokbench:$TAG /bin/bash
